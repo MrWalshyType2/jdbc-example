@@ -1,66 +1,66 @@
-package com.qa.jdbc_example;
+package com.qa.jdbc_example.single_entity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.qa.jdbc_example.JdbcUtils;
 
 public class UserDAO {
 
-	public List<User> findAll() throws SQLException {
-		Connection conn = null;
-		Statement statement = null;
-
-		try {
-			conn = JdbcUtils.getConnection();
-		} catch (SQLException e) {
-
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// nothing we can do here
-				}
-			}
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					// nothing we can do
-				}
-			}
-		}
-		return null;
-	}
-
-	public User findById(long id) {
-		try (Connection conn = JdbcUtils.getConnection(); Statement stmt = conn.createStatement();) {
-			String SQL = "SELECT * FROM user WHERE id = " + id; // we need to use PreparedStatements instead to be safe
+	public List<User> findAll() {
+		try (Connection conn = JdbcUtils.getConnection();
+				Statement stmt = conn.createStatement();) {
 			
-			// execute SQL against the database, using the stmt object
-			ResultSet rs = stmt.executeQuery(SQL); // executeQuery() is used for reading from the database
-			rs.next();
+			String SQL = "SELECT * FROM user";
+			ResultSet rs = stmt.executeQuery(SQL);
 			
-			// The returned ResultSet, rs, holds the User data
-			// - use a helper method to unwrap the result set and create a user instance
-			User user = this.unwrap(rs);
-			return user;
+			List<User> users = new ArrayList<>();
+			
+			while (rs.next()) {
+				User user = this.unwrap(rs);
+				users.add(user);
+			}
+			return users;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public void create(User user) {
+	public User findById(long id) {
+		try (Connection conn = JdbcUtils.getConnection(); 
+			 Statement stmt = conn.createStatement();) {
+			String SQL = "SELECT * FROM user WHERE id = " + id; // we need to use PreparedStatements instead to be safe
+			
+			// execute SQL against the database, using the stmt object
+			ResultSet rs = stmt.executeQuery(SQL); // executeQuery() is used for reading from the database
+			
+			if (rs.next()) {
+				// The returned ResultSet, rs, holds the User data
+				// - use a helper method to unwrap the result set and create a user instance
+				User user = this.unwrap(rs);
+				return user;
+			}	
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void create(User user) {		
 		// the ? represents a placeholder for a value
 		String sql = "INSERT INTO user (forename, surname, age) VALUES (?,?,?)";
 		// get connection
 		// - Connection instances are closeable resources (we must call .close when we
 		// are done)
-		try (Connection conn = JdbcUtils.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
+		try (Connection conn = JdbcUtils.getConnection(); 
+			 PreparedStatement ps = conn.prepareStatement(sql);) {
 			// To execute SQL against a database, we must create either a Statement,
 			// PreparedStatement or CallableStatement
 			// - Statement is for reading from the DB (unsafe for data parameters, create

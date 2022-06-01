@@ -1,4 +1,4 @@
-package com.qa.jdbc_example;
+package com.qa.jdbc_example.single_entity;
 
 import java.util.Objects;
 
@@ -8,6 +8,13 @@ import java.util.Objects;
  *
  */
 public class User {
+	
+	// CREATE TABLE IF NOT EXISTS user (
+	//   id BIGINT UNSIGNED AUTO_INCREMENT,
+	//   forename VARCHAR(128) NOT NULL,
+	//   surname VARCHAR(128) NOT NULL,
+	//   age TINYINT UNSIGNED
+	// );
 
 	private long id;
 	private String forename;
