@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import com.qa.jdbc_example.User;
+
 public class Runner {
 
 	public static void main(String[] args) {

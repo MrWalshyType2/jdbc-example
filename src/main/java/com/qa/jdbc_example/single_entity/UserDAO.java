@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.qa.jdbc_example.JdbcUtils;
+import com.qa.jdbc_example.User;
 
 public class UserDAO {
 
@@ -84,10 +85,12 @@ public class UserDAO {
 	}
 
 	public User update(User user) {
+		// TODO: Implement me
 		return null;
 	}
 
 	public boolean deleteById(long id) {
+		// TODO: Implement me
 		return false;
 	}
 	
