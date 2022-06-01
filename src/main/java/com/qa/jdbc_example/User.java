@@ -50,11 +50,15 @@ public class User {
 		this.age = age;
 	}
 
+	// hashCode is used internally by certain data structures to optimise access times to data
+	// - this is in structures such as HashMaps and HashSets
 	@Override
 	public int hashCode() {
 		return Objects.hash(age, forename, id, surname);
 	}
 
+	// we use this for comparing two objects to see if they are equal, do their fields
+	// contain the same data, very important for testing
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

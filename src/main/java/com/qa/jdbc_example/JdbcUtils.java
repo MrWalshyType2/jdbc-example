@@ -23,7 +23,7 @@ public class JdbcUtils {
 	//Connection connection = JdbcUtils.getConnection();
 	public static Connection getConnection() throws SQLException {
 		if (JdbcUtils.utils == null) {
-			JdbcUtils.utils = new JdbcUtils("jdbc:mysql://localhost:3306/userexample?serverTimezone=UTC","root","root");
+			JdbcUtils.utils = new JdbcUtils("jdbc:mysql://localhost:3306/example?serverTimezone=UTC","root","root");
 		}
 		// use DriverManager.getConnection to get a connection to a database
 		// - in this case, a locally hosted mysql server

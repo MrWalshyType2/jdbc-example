@@ -16,6 +16,7 @@
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<!-- this is the JDBC API implementation -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -23,4 +24,5 @@
 		</dependency>
 
 	</dependencies>
+	
 </project>

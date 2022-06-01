@@ -13,26 +13,33 @@ import com.qa.jdbc_example.User;
 
 public class UserDAO {
 
+	// reading all data from the database
 	public List<User> findAll() {
+		// create list of users for returning after
+		List<User> users = new ArrayList<>();
+		// try-with-resources
+		// - a try followed parenthesis containing variables that we want to be automatically
+		//   closed after the try block, even if an exception was thrown
 		try (Connection conn = JdbcUtils.getConnection();
 				Statement stmt = conn.createStatement();) {
 			
+			// setup sql string and execute against the database
 			String SQL = "SELECT * FROM user";
 			ResultSet rs = stmt.executeQuery(SQL);
 			
-			List<User> users = new ArrayList<>();
-			
+			// unwrap results set and add each user to the users list
 			while (rs.next()) {
 				User user = this.unwrap(rs);
 				users.add(user);
 			}
-			return users;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return users;
 	}
 
+	// reading a single user by their id
 	public User findById(long id) {
 		try (Connection conn = JdbcUtils.getConnection(); 
 			 Statement stmt = conn.createStatement();) {
@@ -54,6 +61,7 @@ public class UserDAO {
 		return null;
 	}
 
+	// creating a user in the database
 	public void create(User user) {		
 		// the ? represents a placeholder for a value
 		String sql = "INSERT INTO user (forename, surname, age) VALUES (?,?,?)";
@@ -61,7 +69,7 @@ public class UserDAO {
 		// - Connection instances are closeable resources (we must call .close when we
 		// are done)
 		try (Connection conn = JdbcUtils.getConnection(); 
-			 PreparedStatement ps = conn.prepareStatement(sql);) {
+			 PreparedStatement ps = conn.prepareStatement(sql);) {			
 			// To execute SQL against a database, we must create either a Statement,
 			// PreparedStatement or CallableStatement
 			// - Statement is for reading from the DB (unsafe for data parameters, create
@@ -74,16 +82,20 @@ public class UserDAO {
 			// we need to bind the data to the query
 			// - call the ps.setXXXX() methods with the index of the parameter in the sql query and the data to bind
 			// - when preparing parameters, start from 1
+			// - this is in reference to the 3 question marks in the SQL statement, it is where the data is inserted
 			ps.setString(1, user.getForename());
 			ps.setString(2, user.getSurname());
 			ps.setInt(3, user.getAge());
 			
+			// we call executeUpdate() on the statement for any database transactions which modify state,
+			// i.e, DELETE, INSERT INTO, UPDATE, ...
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
+	// TASKS:
 	public User update(User user) {
 		// TODO: Implement me
 		return null;
